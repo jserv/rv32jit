@@ -1,0 +1,5 @@
+.vscode
+.cache
+.idea
+*build*/
+*prebuilts*/
