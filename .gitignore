@@ -1,5 +1,8 @@
 .vscode
 .cache
 .idea
+*.elf
+*.o
+*.o.d
 *build*/
 *prebuilts*/

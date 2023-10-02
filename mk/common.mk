@@ -21,3 +21,15 @@ PASS_COLOR = \e[32;01m
 NO_COLOR = \e[0m
 
 pass = $(PRINTF) "$(PASS_COLOR)$1 Passed$(NO_COLOR)\n"
+
+# File utilities
+SHA1SUM = sha1sum
+SHA1SUM := $(shell which $(SHA1SUM))
+ifndef SHA1SUM
+    SHA1SUM = shasum
+    SHA1SUM := $(shell which $(SHA1SUM))
+    ifndef SHA1SUM
+        $(warning No shasum found. Disable checksums)
+        SHA1SUM := echo
+    endif
+endif

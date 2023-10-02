@@ -11,9 +11,17 @@ Features
 
 Currently, only GNU/Linux is supported for building `rv32jit`. You will need clang version 15+ for the build, which can be downloaded from the [LLVM Page](https://releases.llvm.org/download.html).
 
-Build the emulator.
+Build the emulator:
 ```shell
 $ make
+```
+
+You might receive the message "Please run 'make' again."
+If you do, simply follow the instruction and run `make` once more.
+
+Download prebuilt RISC-V ELF files and run:
+```shell
+$ make check
 ```
 
 ## License
