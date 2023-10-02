@@ -29,7 +29,7 @@ typedef int8_t i8;
 #define likely(v) __builtin_expect(!!(v), 1)
 #define unlikely(v) __builtin_expect(!!(v), 0)
 
-#define UNUSED __attribute__((unused))
+#define UNUSED [[maybe_unused]]
 
 #define ALWAYS_INLINE inline __attribute__((always_inline))
 #define NOINLINE __attribute__((noinline))
@@ -57,19 +57,19 @@ typedef int8_t i8;
     name &operator=(name &&) = default;
 
 template <typename T, typename A>
-inline T roundup(T x, A y)
+constexpr inline T roundup(T x, A y)
 {
     return ((x + (y - 1)) / y) * y;
 }
 
 template <typename T, typename A>
-inline T rounddown(T x, A y)
+constexpr inline T rounddown(T x, A y)
 {
     return x - x % y;
 }
 
 template <typename T>
-T unaligned_load(T const *ptr)
+constexpr T unaligned_load(T const *ptr)
 {
     struct uT {
         T x;
@@ -78,7 +78,7 @@ T unaligned_load(T const *ptr)
 }
 
 template <typename T>
-void unaligned_store(T *ptr, T val)
+constexpr void unaligned_store(T *ptr, T val)
 {
     struct uT {
         T x;
@@ -87,13 +87,16 @@ void unaligned_store(T *ptr, T val)
 }
 
 template <typename T, typename P>
-typename std::enable_if_t<!std::is_same_v<T, P>, T> unaligned_load(P const *ptr)
+constexpr typename std::enable_if_t<!std::is_same_v<T, P>, T> unaligned_load(
+    P const *ptr)
 {
     return unaligned_load<T>(reinterpret_cast<T const *>(ptr));
 }
 
 template <typename T, typename P, typename V>
-typename std::enable_if_t<!std::is_same_v<T, P>> unaligned_store(P *ptr, V val)
+constexpr typename std::enable_if_t<!std::is_same_v<T, P>> unaligned_store(
+    P *ptr,
+    V val)
 {
     unaligned_store<T>(reinterpret_cast<T *>(ptr), static_cast<T>(val));
 }
@@ -147,6 +150,6 @@ inline constexpr size_t operator""_GB(unsigned long long n)
 
 namespace dbt
 {
-void __attribute__((noreturn)) Panic(char const *msg = "");
-void __attribute__((noreturn)) Panic(std::string const &msg);
+void [[noreturn]] Panic(char const *msg = "");
+void [[noreturn]] Panic(std::string const &msg);
 }  // namespace dbt
