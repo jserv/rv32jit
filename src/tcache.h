@@ -83,8 +83,6 @@ struct tcache {
     }
 
 private:
-    tcache() = delete;
-
     static TBlock *LookupFull(u32 ip);
 
     using MapType = std::map<u32, TBlock *>;
