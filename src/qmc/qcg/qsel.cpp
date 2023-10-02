@@ -86,7 +86,7 @@ struct QSelVisitor : qir::InstVisitor<QSelVisitor, void> {
 public:
     QSelVisitor(QSel *sel_) : sel(sel_) {}
 
-    void visitInst(qir::Inst *ins) { unreachable(""); }
+    void visitInst(qir::Inst *ins UNUSED) { unreachable(""); }
 
     void visitInstUnop(qir::InstUnop *ins) { sel->SelectOperands(ins); }
 
@@ -94,11 +94,11 @@ public:
 
     void visitInstSetcc(qir::InstSetcc *ins) { sel->SelectOperands(ins); }
 
-    void visitInstBr(qir::InstBr *ins) {}
+    void visitInstBr(qir::InstBr *ins UNUSED) {}
 
     void visitInstBrcc(qir::InstBrcc *ins) { sel->SelectOperands(ins); }
 
-    void visitInstGBr(qir::InstGBr *ins) {}
+    void visitInstGBr(qir::InstGBr *ins UNUSED) {}
 
     void visitInstGBrind(qir::InstGBrind *ins) { sel->SelectOperands(ins); }
 
@@ -106,7 +106,7 @@ public:
 
     void visitInstVMStore(qir::InstVMStore *ins) { sel->SelectOperands(ins); }
 
-    void visitInstHcall(qir::InstHcall *ins) {}
+    void visitInstHcall(qir::InstHcall *ins UNUSED) {}
 
     void visit_sll(qir::InstBinop *ins) { sel->SelectOperands(ins); }
 

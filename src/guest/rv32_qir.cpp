@@ -54,7 +54,7 @@ StateInfo const *RV32Translator::GetStateInfo()
 }
 StateInfo const *const RV32Translator::state_info = GetStateInfo();
 
-RV32Translator::RV32Translator(qir::Region *region_, uptr vmem)
+RV32Translator::RV32Translator(qir::Region *region_ UNUSED, uptr vmem)
     : qb(), vmem_base(vmem)
 {
 }

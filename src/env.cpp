@@ -71,7 +71,9 @@ void env::InitThread(CPUState *state, ElfImage *elf)
     state->ip = elf->entry;
 }
 
-static void dbt_sigaction_memory(int signo, siginfo_t *sinfo, void *uctx_raw)
+static void dbt_sigaction_memory(int signo UNUSED,
+                                 siginfo_t *sinfo,
+                                 void *uctx_raw UNUSED)
 {
     if (!mmu::check_h2g(sinfo->si_addr))
         Panic("Memory fault in host address space");
@@ -79,7 +81,7 @@ static void dbt_sigaction_memory(int signo, siginfo_t *sinfo, void *uctx_raw)
 }
 
 // TODO: emulate signals
-void env::InitSignals(CPUState *state)
+void env::InitSignals(CPUState *state UNUSED)
 {
     struct sigaction sa;
     sigset_t sset;

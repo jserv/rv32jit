@@ -29,6 +29,8 @@ typedef int8_t i8;
 #define likely(v) __builtin_expect(!!(v), 1)
 #define unlikely(v) __builtin_expect(!!(v), 0)
 
+#define UNUSED __attribute__((unused))
+
 #define ALWAYS_INLINE inline __attribute__((always_inline))
 #define NOINLINE __attribute__((noinline))
 

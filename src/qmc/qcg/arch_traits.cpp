@@ -140,7 +140,7 @@ void ArchTraits::init()
     }();
 }
 
-bool ArchTraits::match_gp_const(qir::VType type, i64 val, RACtImm ct)
+bool ArchTraits::match_gp_const(qir::VType type UNUSED, i64 val, RACtImm ct)
 {
     if (to_underlying(ct & RACtImm::ANY))
         return true;

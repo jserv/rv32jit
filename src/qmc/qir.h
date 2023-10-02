@@ -699,7 +699,7 @@ struct InstVisitor {
     QIR_CLASS_LIST(CLASS)
 #undef CLASS
 
-    void visitInst(Inst *ins) {}
+    void visitInst(Inst *ins UNUSED) {}
 
     RT visit(Inst *ins)
     {

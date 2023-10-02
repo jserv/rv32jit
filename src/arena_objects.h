@@ -13,7 +13,7 @@ struct MemArenaSTL {
 
     pointer allocate(size_type n) { return arena->Allocate<T>(n); }
 
-    void deallocate(pointer p, size_type n) {}
+    void deallocate(pointer p UNUSED, size_type n UNUSED) {}
 
     bool operator==(MemArenaSTL const &rhs) { return this->arena == rhs.arena; }
 
