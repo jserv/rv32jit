@@ -220,7 +220,7 @@ inline void RV32Translator::TranslateHelper(insn::Base i, RuntimeStubId stub)
         }                                                 \
         insn_ip += 4;                                     \
     }                                                     \
-    ALWAYS_INLINE void RV32Translator::V_##name(insn::Insn_##name i)
+    ALWAYS_INLINE void RV32Translator::V_##name(insn::Insn_##name i UNUSED)
 
 #define TRANSLATOR_Unimpl(name) \
     TRANSLATOR(name) { dbt::Panic("Unimplemented instruction " #name); }

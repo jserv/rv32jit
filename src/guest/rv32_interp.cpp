@@ -22,37 +22,38 @@ namespace dbt::rv32
         RaiseTrap();         \
     } while (0)
 
-#define HANDLER(name)                                                       \
-    static ALWAYS_INLINE void Impl_##name(CPUState *s, u32 &gip, u8 *vmem,  \
-                                          insn::Insn_##name i);             \
-    static ALWAYS_INLINE void H_##name(CPUState *state, u32 &gip, u8 *vmem, \
-                                       u32 insn_raw)                        \
-    {                                                                       \
-        insn::Insn_##name i{(u32) insn_raw};                                \
-        static constexpr auto flags = decltype(i)::flags;                   \
-        if constexpr (flags & insn::Flags::Trap ||                          \
-                      flags & insn::Flags::MayTrap) {                       \
-            state->ip = GET_GIP();                                          \
-        }                                                                   \
-        Impl_##name(state, gip, vmem, i);                                   \
-        if constexpr (flags & insn::Flags::HasRd) {                         \
-            state->gpr[0] = 0;                                              \
-        }                                                                   \
-        if constexpr (flags & insn::Flags::Branch) {                        \
-            state->ip = GET_GIP();                                          \
-        } else {                                                            \
-            gip += 4;                                                       \
-        }                                                                   \
-    }                                                                       \
-    extern "C" void __attribute__((used))                                   \
-    qcgstub_rv32_##name(CPUState *state, u32 insn_raw)                      \
-    {                                                                       \
-        u32 gip = state->ip;                                                \
-        H_##name(state, gip, mmu::base, insn_raw);                          \
-        state->ip = gip;                                                    \
-    }                                                                       \
-    static ALWAYS_INLINE void Impl_##name(CPUState *s, u32 &gip, u8 *vmem,  \
-                                          insn::Insn_##name i)
+#define HANDLER(name)                                                          \
+    static ALWAYS_INLINE void Impl_##name(CPUState *s, u32 &gip, u8 *vmem,     \
+                                          insn::Insn_##name i);                \
+    static ALWAYS_INLINE void H_##name(CPUState *state, u32 &gip, u8 *vmem,    \
+                                       u32 insn_raw)                           \
+    {                                                                          \
+        insn::Insn_##name i{(u32) insn_raw};                                   \
+        static constexpr auto flags = decltype(i)::flags;                      \
+        if constexpr (flags & insn::Flags::Trap ||                             \
+                      flags & insn::Flags::MayTrap) {                          \
+            state->ip = GET_GIP();                                             \
+        }                                                                      \
+        Impl_##name(state, gip, vmem, i);                                      \
+        if constexpr (flags & insn::Flags::HasRd) {                            \
+            state->gpr[0] = 0;                                                 \
+        }                                                                      \
+        if constexpr (flags & insn::Flags::Branch) {                           \
+            state->ip = GET_GIP();                                             \
+        } else {                                                               \
+            gip += 4;                                                          \
+        }                                                                      \
+    }                                                                          \
+    extern "C" void __attribute__((used))                                      \
+    qcgstub_rv32_##name(CPUState *state, u32 insn_raw)                         \
+    {                                                                          \
+        u32 gip = state->ip;                                                   \
+        H_##name(state, gip, mmu::base, insn_raw);                             \
+        state->ip = gip;                                                       \
+    }                                                                          \
+    static ALWAYS_INLINE void Impl_##name(CPUState *s UNUSED, u32 &gip UNUSED, \
+                                          u8 *vmem UNUSED,                     \
+                                          insn::Insn_##name i UNUSED)
 
 #define HANDLER_Branch(name, type, cond)                               \
     HANDLER(name)                                                      \
