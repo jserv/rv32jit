@@ -148,7 +148,7 @@ enum class SyscallID : u32 {
         End,
 };
 
-[[noreturn]] static uabi_long SyscallUnhandled(uabi_long no)
+[[noreturn]] static uabi_long SyscallUnhandled(uabi_ulong no)
 {
     static char const *const names[to_underlying(SyscallID::End)] = {
 #define _(name, no) [to_underlying(SyscallID::linux_##name)] = #name,

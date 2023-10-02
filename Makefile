@@ -1,5 +1,5 @@
 CXX := clang++-15
-CXXFLAGS := -O2 -flto -Wall -Wno-c99-designator
+CXXFLAGS := -O2 -flto -Wall -Wextra -Wno-c99-designator
 CXXFLAGS += -I src
 CXXFLAGS += -std=gnu++20 -fno-rtti -fexceptions
 
