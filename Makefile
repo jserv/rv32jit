@@ -99,14 +99,10 @@ $(OUT)/rv32jit: $(ASMJIT_DIR)/asmjit/asmjit.h $(OBJS)
 
 # Rules for downloading prebuilt RISC-V ELF files
 include mk/external.mk
-CHECK_ELF_FILES := \
-	aes \
-	nqueens \
-	mandelbrot
-check: $(BIN) $(aes_DATA) $(mandelbrot_DATA) $(nqueens_DATA)
+check: $(BIN) $(CHECK_ELF_FILES)
 	$(Q)$(foreach e,$(CHECK_ELF_FILES),\
-	    $(PRINTF) "Running $(e).elf ...\n"; \
-	    $(BIN) $(e).elf; \
+	    $(PRINTF) "Running $(e) ...\n"; \
+	    $(BIN) $(e) && $(call notice, [OK]); \
 	)
 
 .PHONY: clean
