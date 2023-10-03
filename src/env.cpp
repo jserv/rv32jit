@@ -313,9 +313,8 @@ static uabi_long linux_sysinfo(struct uabi_sysinfo *info)
 
     if (rc > 0) {
         info->uptime = host_info.uptime;
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 3; ++i)
             info->loads[i] = host_info.loads[i];
-        }
         info->totalram = 1_GB;
         info->freeram = 500_MB;
         info->sharedram = info->bufferram = info->totalswap = info->freeswap =
@@ -481,7 +480,6 @@ void env::SyscallLinux(CPUState *state)
 #define HANDLE(name)      \
     case SyscallID::name: \
         return do_syscall(env_syscall::name);
-
 #define HANDLE_SKIP(name) \
     case SyscallID::name: \
         return -ENOSYS;
@@ -512,6 +510,7 @@ void env::SyscallLinux(CPUState *state)
             HANDLE(linux_statx)
             HANDLE(linux_clock_gettime64)
 #undef HANDLE
+#undef HANDLE_SKIP
         default:
             SyscallUnhandled(syscallno);
         }
@@ -640,9 +639,8 @@ void env::InitAVectors(ElfImage *elf, int argv_n, char **argv)
         AllocAVectorStr(stk, auxv_salt, sizeof(auxv_salt));
 
     u32 *argv_strings_g = (u32 *) alloca(sizeof(char *) * argv_n);
-    for (int i = 0; i < argv_n; ++i) {
+    for (int i = 0; i < argv_n; ++i)
         argv_strings_g[i] = stk = AllocAVectorStr(stk, argv[i]);
-    }
 
     stk &= -4;
 
@@ -668,9 +666,8 @@ void env::InitAVectors(ElfImage *elf, int argv_n, char **argv)
 
     push_avval(argc_p, argv_n);
 
-    for (int i = 0; i < argv_n; ++i) {
+    for (int i = 0; i < argv_n; ++i)
         push_avval(argv_p, argv_strings_g[i]);
-    }
     push_avval(argv_p, 0);
 
     push_avval(envp_p, lc_all_str_g);

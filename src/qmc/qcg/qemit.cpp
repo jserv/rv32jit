@@ -20,9 +20,8 @@ QEmit::QEmit(qir::Region *region,
 
     u32 n_labels = region->GetNumBlocks();
     labels.reserve(n_labels);
-    for (u32 i = 0; i < n_labels; ++i) {
+    for (u32 i = 0; i < n_labels; ++i)
         labels.push_back(j.newLabel());
-    }
 }
 
 std::span<u8> QEmit::EmitCode()
@@ -137,7 +136,6 @@ void QEmit::FrameDestroy()
 
 void QEmit::Prologue(u32 ip UNUSED)
 {
-    // j.int3();
     FrameSetup();
 }
 

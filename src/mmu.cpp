@@ -49,16 +49,14 @@ void mmu::Destroy()
 
 void mmu::MarkUsedPages(u32 pvaddr, u32 plen)
 {
-    for (u32 p = pvaddr; p < plen; ++p) {
+    for (u32 p = pvaddr; p < plen; ++p)
         used_pages.set(p);
-    }
 }
 
 void mmu::MarkFreePages(u32 pvaddr, u32 plen)
 {
-    for (u32 p = pvaddr; p < plen; ++p) {
+    for (u32 p = pvaddr; p < plen; ++p)
         used_pages.reset(p);
-    }
 }
 
 u32 mmu::LookupFreeRange(u32 pvaddr, u32 plen)
