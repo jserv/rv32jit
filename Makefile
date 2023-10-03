@@ -75,10 +75,6 @@ $(OUT)/util/%.o: src/util/%.cpp
 	$(VECHO) "  CXX\t$@\n"
 	$(Q)$(CXX) -o $@ $(CXXFLAGS) -c -MMD -MF $@.d $<
 
-$(OUT)/tcache/%.o: src/tcache/%.cpp
-	$(VECHO) "  CXX\t$@\n"
-	$(Q)$(CXX) -o $@ $(CXXFLAGS) -c -MMD -MF $@.d $<
-
 $(OUT)/qmc/%.o: src/qmc/%.cpp
 	$(VECHO) "  CXX\t$@\n"
 	$(Q)$(CXX) -o $@ $(CXXFLAGS) -c -MMD -MF $@.d $<
@@ -91,7 +87,7 @@ $(OUT)/guest/%.o: src/guest/%.cpp
 	$(VECHO) "  CXX\t$@\n"
 	$(Q)$(CXX) -o $@ $(CXXFLAGS) -c -MMD -MF $@.d $<
 
-SHELL_HACK := $(shell mkdir -p $(OUT) $(OUT)/util $(OUT)/tcache $(OUT)/qmc $(OUT)/qmc/qcg $(OUT)/guest $(OUT)/asmjit/core $(OUT)/asmjit/x86)
+SHELL_HACK := $(shell mkdir -p $(OUT) $(OUT)/util $(OUT)/qmc $(OUT)/qmc/qcg $(OUT)/guest $(OUT)/asmjit/core $(OUT)/asmjit/x86)
 
 $(OUT)/rv32jit: $(ASMJIT_DIR)/asmjit/asmjit.h $(OBJS)
 	$(VECHO) "  LD\t$@\n"
