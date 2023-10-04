@@ -16,6 +16,7 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include <cstring>
+#include <ctime>
 
 #include "env.h"
 #include "execute.h"
