@@ -1,4 +1,4 @@
-CXX := clang++-15
+CXX := clang++
 CXXFLAGS := -O2 -flto -Wall -Wextra -Wno-c99-designator
 CXXFLAGS += -I src
 CXXFLAGS += -std=gnu++20 -fno-rtti -fexceptions
@@ -12,6 +12,13 @@ LDFLAGS += -ldl -lrt
 include mk/common.mk
 
 OUT ?= build
+
+CXX_VERSION := $(shell $(CXX) --version | grep -oP 'clang version \K\d+')
+ifeq ($(shell echo "$(CXX_VERSION) >= 15" | bc), 1)
+    $(info clang++ version is $(CXX_VERSION), good to go.)
+else
+    $(error clang++ version is $(CXX_VERSION), please upgrade to clang 15 or above.)
+endif
 
 # AsmJit
 ASMJIT_DIR = external/asmjit/src
