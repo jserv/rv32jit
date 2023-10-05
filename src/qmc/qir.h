@@ -5,10 +5,10 @@
 #include <vector>
 
 #include "arena_objects.h"
-#include "qmc/ilist.h"
 #include "qmc/qir_ops.h"
 #include "qmc/runtime_stubs.h"
 #include "util/bitfield.h"
+#include "util/ilist.h"
 
 namespace dbt::qcg
 {
