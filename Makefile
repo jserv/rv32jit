@@ -30,20 +30,22 @@ OBJS += \
 	execute.o \
 	env.o \
 	tcache.o \
+	runtime_stubs.o \
 	\
-	qmc/compile.o \
-	qmc/qir.o \
-	qmc/qir_opt.o \
-	qmc/runtime_stubs.o \
-	qmc/qcg/arch_traits.o \
-	qmc/qcg/jitabi.o \
-	qmc/qcg/qcg.o \
-	qmc/qcg/qemit.o \
-	qmc/qcg/qra.o \
-	qmc/qcg/qsel.o \
+	ir/compile.o \
+	ir/qir.o \
+	ir/qir_opt.o \
+	\
+	codegen/arch_traits.o \
+	codegen/jitabi.o \
+	codegen/qcg.o \
+	codegen/emit.o \
+	codegen/regalloc.o \
+	codegen/select.o \
 	\
 	guest/rv32_interp.o \
 	guest/rv32_qir.o \
+	\
 	main.o
 
 OBJS := $(addprefix $(OUT)/, $(OBJS))
@@ -74,11 +76,11 @@ $(OUT)/util/%.o: src/util/%.cpp
 	$(VECHO) "  CXX\t$@\n"
 	$(Q)$(CXX) -o $@ $(CXXFLAGS) -c -MMD -MF $@.d $<
 
-$(OUT)/qmc/%.o: src/qmc/%.cpp
+$(OUT)/ir/%.o: src/ir/%.cpp
 	$(VECHO) "  CXX\t$@\n"
 	$(Q)$(CXX) -o $@ $(CXXFLAGS) -c -MMD -MF $@.d $<
 
-$(OUT)/qmc/qcg/%.o: src/qmc/qcg/%.cpp
+$(OUT)/codegen/%.o: src/codegen/%.cpp
 	$(VECHO) "  CXX\t$@\n"
 	$(Q)$(CXX) -o $@ $(CXXFLAGS) -c -MMD -MF $@.d $<
 
@@ -86,7 +88,7 @@ $(OUT)/guest/%.o: src/guest/%.cpp
 	$(VECHO) "  CXX\t$@\n"
 	$(Q)$(CXX) -o $@ $(CXXFLAGS) -c -MMD -MF $@.d $<
 
-SHELL_HACK := $(shell mkdir -p $(OUT) $(OUT)/util $(OUT)/qmc $(OUT)/qmc/qcg $(OUT)/guest $(OUT)/asmjit/core $(OUT)/asmjit/x86)
+SHELL_HACK := $(shell mkdir -p $(OUT) $(OUT)/util $(OUT)/ir $(OUT)/codegen $(OUT)/guest $(OUT)/asmjit/core $(OUT)/asmjit/x86)
 
 $(OUT)/rv32jit: $(ASMJIT_DIR)/asmjit/asmjit.h $(OBJS)
 	$(VECHO) "  LD\t$@\n"

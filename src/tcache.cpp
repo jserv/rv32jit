@@ -1,5 +1,5 @@
 #include "tcache.h"
-#include "qmc/qcg/jitabi.h"
+#include "codegen/jitabi.h"
 
 namespace dbt
 {

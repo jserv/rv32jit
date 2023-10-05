@@ -1,4 +1,4 @@
-#include "qmc/qcg/qemit.h"
+#include "codegen/emit.h"
 #include "guest/rv32_cpu.h"
 
 namespace dbt::qcg

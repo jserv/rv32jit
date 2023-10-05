@@ -5,8 +5,8 @@
 #include <vector>
 
 #include "arena_objects.h"
-#include "qmc/qir_ops.h"
-#include "qmc/runtime_stubs.h"
+#include "ir/qir_ops.h"
+#include "runtime_stubs.h"
 #include "util/bitfield.h"
 #include "util/ilist.h"
 

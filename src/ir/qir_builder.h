@@ -1,7 +1,7 @@
 #pragma once
 
-#include "qmc/qir.h"
-#include "qmc/qir_opt.h"
+#include "ir/qir.h"
+#include "ir/qir_opt.h"
 
 namespace dbt::qir
 {

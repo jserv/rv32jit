@@ -1,5 +1,5 @@
-#include "qmc/qcg/qcg.h"
-#include "qmc/qcg/qemit.h"
+#include "codegen/qcg.h"
+#include "codegen/emit.h"
 
 namespace dbt::qcg
 {

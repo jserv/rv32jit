@@ -1,6 +1,6 @@
-#include "qmc/compile.h"
+#include "ir/compile.h"
+#include "codegen/qcg.h"
 #include "guest/rv32_qir.h"
-#include "qmc/qcg/qcg.h"
 
 namespace dbt::qir
 {

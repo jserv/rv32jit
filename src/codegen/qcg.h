@@ -1,7 +1,7 @@
 #pragma once
 
-#include "qmc/compile.h"
-#include "qmc/qir.h"
+#include "ir/compile.h"
+#include "ir/qir.h"
 
 namespace dbt::qcg
 {

@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <numeric>
 
-#include "qmc/qcg/arch_traits.h"
+#include "codegen/arch_traits.h"
 
 namespace dbt::qcg
 {

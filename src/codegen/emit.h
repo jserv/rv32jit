@@ -2,9 +2,9 @@
 
 #include <vector>
 
-#include "qmc/qcg/arch_traits.h"
-#include "qmc/qcg/jitabi.h"
-#include "qmc/qcg/qcg.h"
+#include "codegen/arch_traits.h"
+#include "codegen/jitabi.h"
+#include "codegen/qcg.h"
 
 namespace dbt::qcg
 {

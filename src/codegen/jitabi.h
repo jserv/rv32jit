@@ -1,6 +1,6 @@
 #pragma once
 
-#include "qmc/qcg/arch_traits.h"
+#include "codegen/arch_traits.h"
 
 namespace dbt
 {

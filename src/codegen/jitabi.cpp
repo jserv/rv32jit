@@ -1,6 +1,6 @@
-#include "qmc/qcg/jitabi.h"
+#include "codegen/jitabi.h"
+#include "codegen/arch_traits.h"
 #include "execute.h"
-#include "qmc/qcg/arch_traits.h"
 #include "tcache.h"
 
 namespace dbt::jitabi

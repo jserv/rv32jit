@@ -1,5 +1,5 @@
-#include "qmc/qir_opt.h"
-#include "qmc/qir_builder.h"
+#include "ir/qir_opt.h"
+#include "ir/qir_builder.h"
 
 namespace dbt::qir
 {

@@ -1,4 +1,4 @@
-#include "qmc/qir.h"
+#include "ir/qir.h"
 
 namespace dbt::qir
 {

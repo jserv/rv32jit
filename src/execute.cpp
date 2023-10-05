@@ -1,8 +1,8 @@
 #include "execute.h"
+#include "codegen/jitabi.h"
 #include "guest/rv32_cpu.h"
 #include "guest/rv32_ops.h"
-#include "qmc/compile.h"
-#include "qmc/qcg/jitabi.h"
+#include "ir/compile.h"
 
 namespace dbt
 {

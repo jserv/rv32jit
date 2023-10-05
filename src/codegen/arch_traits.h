@@ -1,7 +1,7 @@
 #pragma once
 
-#include "qmc/qcg/asmjit_deps.h"
-#include "qmc/qir.h"
+#include "codegen/asmjit_deps.h"
+#include "ir/qir.h"
 
 namespace dbt::qcg
 {

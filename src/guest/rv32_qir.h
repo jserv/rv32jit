@@ -4,8 +4,8 @@
 #include <map>
 
 #include "guest/rv32_insn.h"
-#include "qmc/compile.h"
-#include "qmc/qir_builder.h"
+#include "ir/compile.h"
+#include "ir/qir_builder.h"
 
 namespace dbt::qir::rv32
 {

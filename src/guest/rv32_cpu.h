@@ -3,7 +3,7 @@
 #include <array>
 
 #include "guest/rv32_ops.h"
-#include "qmc/runtime_stubs.h"
+#include "runtime_stubs.h"
 #include "tcache.h"
 #include "util/common.h"
 
