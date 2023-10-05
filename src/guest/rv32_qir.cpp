@@ -126,13 +126,11 @@ void RV32Translator::TranslateBrcc(rv32::insn::B i, CondCode cc)
 #if 1
     auto make_target = [&](u32 ip) {
         auto it = ip2bb.find(ip);
-        if (it != ip2bb.end()) {
+        if (it != ip2bb.end())
             return it->second;
-        } else {
-            qb = Builder(qb.CreateBlock());
-            qb.Create_gbr(vconst(ip));
-            return qb.GetBlock();
-        }
+        qb = Builder(qb.CreateBlock());
+        qb.Create_gbr(vconst(ip));
+        return qb.GetBlock();
     };
 
     auto bb_src = qb.GetBlock();

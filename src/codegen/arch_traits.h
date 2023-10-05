@@ -56,7 +56,7 @@ namespace ArchTraits
 static constexpr u8 GPR_NUM = 16;
 
 #define _(name, id) \
-    [[maybe_unused]] static constexpr auto name = asmjit::x86::Gp::kId##id;
+    UNUSED static constexpr auto name = asmjit::x86::Gp::kId##id;
 // all gpr
 _(RAX, Ax);
 _(RCX, Cx);
@@ -81,7 +81,7 @@ _(R15, R15);
     _(MEMBASE, RBP) /* ghccc1 */ \
     _(SP, RSP)
 
-#define _(name, reg) [[maybe_unused]] static constexpr auto name = reg;
+#define _(name, reg) UNUSED static constexpr auto name = reg;
 QMC_FIXED_REGS
 #undef _
 

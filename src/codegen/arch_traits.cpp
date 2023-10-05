@@ -127,7 +127,7 @@ _(r_0_cxi) = InstCt<1, 2>::Make({DEF(GPR(R))},
 
 void ArchTraits::init()
 {
-    [[maybe_unused]] static auto x = []() {
+    UNUSED static auto x = []() {
 #define _(name, ctname)                                             \
     {                                                               \
         auto &info = qir::op_info[to_underlying(qir::Op::_##name)]; \

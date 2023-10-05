@@ -368,7 +368,7 @@ template <asmjit::x86::Inst::Id Op>
 ALWAYS_INLINE void QEmit::EmitInstBinop(qir::InstBinop *ins)
 {
     auto &vrd = ins->o(0);
-    [[maybe_unused]] auto vs0 = ins->i(0);
+    UNUSED auto vs0 = ins->i(0);
     auto vs1 = ins->i(1);
 
     assert(vrd.GetPGPR() == vs0.GetPGPR());
@@ -402,21 +402,21 @@ void QEmit::Emit_xor(qir::InstBinop *ins)
 
 void QEmit::Emit_sra(qir::InstBinop *ins)
 {
-    [[maybe_unused]] auto vs1 = ins->i(1);
+    UNUSED auto vs1 = ins->i(1);
     assert(vs1.IsConst() || vs1.GetPGPR() == asmjit::x86::Gp::kIdCx);
     EmitInstBinop<asmjit::x86::Inst::kIdSar>(ins);
 }
 
 void QEmit::Emit_srl(qir::InstBinop *ins)
 {
-    [[maybe_unused]] auto vs1 = ins->i(1);
+    UNUSED auto vs1 = ins->i(1);
     assert(vs1.IsConst() || vs1.GetPGPR() == asmjit::x86::Gp::kIdCx);
     EmitInstBinop<asmjit::x86::Inst::kIdShr>(ins);
 }
 
 void QEmit::Emit_sll(qir::InstBinop *ins)
 {
-    [[maybe_unused]] auto vs1 = ins->i(1);
+    UNUSED auto vs1 = ins->i(1);
     assert(vs1.IsConst() || vs1.GetPGPR() == asmjit::x86::Gp::kIdCx);
     EmitInstBinop<asmjit::x86::Inst::kIdShl>(ins);
 }
