@@ -134,7 +134,7 @@ void QEmit::FrameDestroy()
         j.pop(asmjit::x86::rcx);
 }
 
-void QEmit::Prologue(u32 ip UNUSED)
+void QEmit::Prologue(UNUSED u32 ip)
 {
     FrameSetup();
 }
@@ -176,7 +176,7 @@ void QEmit::Emit_hcall(qir::InstHcall *ins)
     j.emit(asmjit::x86::Inst::kIdCall, make_stubcall_target(ins->stub));
 }
 
-void QEmit::Emit_br(qir::InstBr *ins UNUSED)
+void QEmit::Emit_br(UNUSED qir::InstBr *ins)
 {
     auto bb_s = bb->GetSuccs().at(0);
     auto bb_ff = &*++bb->getIter();

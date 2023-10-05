@@ -51,9 +51,9 @@ namespace dbt::rv32
         H_##name(state, gip, mmu::base, insn_raw);                             \
         state->ip = gip;                                                       \
     }                                                                          \
-    static ALWAYS_INLINE void Impl_##name(CPUState *s UNUSED, u32 &gip UNUSED, \
-                                          u8 *vmem UNUSED,                     \
-                                          insn::Insn_##name i UNUSED)
+    static ALWAYS_INLINE void Impl_##name(UNUSED CPUState *s, UNUSED u32 &gip, \
+                                          UNUSED u8 *vmem,                     \
+                                          UNUSED insn::Insn_##name i)
 
 #define HANDLER_Branch(name, type, cond)                               \
     HANDLER(name)                                                      \

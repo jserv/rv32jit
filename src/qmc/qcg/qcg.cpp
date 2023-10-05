@@ -39,7 +39,7 @@ struct QCodegenVisitor : qir::InstVisitor<QCodegenVisitor, void> {
 public:
     QCodegenVisitor(QCodegen *cg_) : cg(cg_) {}
 
-    void visitInst(qir::Inst *ins UNUSED) { unreachable(""); }
+    void visitInst(UNUSED qir::Inst *ins) { unreachable(""); }
 
 #define OP(name, cls, flags) \
     void visit_##name(qir::cls *ins) { cg->ce->Emit_##name(ins); }

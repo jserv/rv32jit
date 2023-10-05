@@ -44,9 +44,9 @@ private:
     ALWAYS_INLINE void EmitInstBinop(qir::InstBinop *ins);
 
     struct JitErrorHandler : asmjit::ErrorHandler {
-        virtual void handleError(asmjit::Error err UNUSED,
-                                 const char *message UNUSED,
-                                 asmjit::BaseEmitter *origin UNUSED) override
+        virtual void handleError(UNUSED asmjit::Error err,
+                                 UNUSED const char *message,
+                                 UNUSED asmjit::BaseEmitter *origin) override
         {
             Panic("QEmit/asmjit failed");
         }

@@ -5,9 +5,9 @@
 #include "util/common.h"
 
 struct InArena {
-    void *operator new(size_t asz UNUSED, void *aptr) { return aptr; }
+    void *operator new(UNUSED size_t asz, void *aptr) { return aptr; }
 
-    void operator delete(void *aptr UNUSED, size_t asz UNUSED)
+    void operator delete(UNUSED void *aptr, UNUSED size_t asz)
     {
         unreachable("");
     }

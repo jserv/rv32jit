@@ -375,7 +375,7 @@ struct QRegAllocVisitor : qir::InstVisitor<QRegAllocVisitor, void> {
 public:
     QRegAllocVisitor(QRegAlloc *ra_) : ra(ra_) {}
 
-    void visitInst(qir::Inst *ins UNUSED) { unreachable(""); }
+    void visitInst(UNUSED qir::Inst *ins) { unreachable(""); }
 
     void visitInstUnop(qir::InstUnop *ins) { ra->AllocOp(ins); }
 
@@ -383,7 +383,7 @@ public:
 
     void visitInstSetcc(qir::InstSetcc *ins) { ra->AllocOp(ins); }
 
-    void visitInstBr(qir::InstBr *ins UNUSED)
+    void visitInstBr(UNUSED qir::InstBr *ins)
     {
         // has no voperands
         ra->BlockBoundary();
@@ -395,7 +395,7 @@ public:
         ra->BlockBoundary();
     }
 
-    void visitInstGBr(qir::InstGBr *ins UNUSED)
+    void visitInstGBr(UNUSED qir::InstGBr *ins)
     {
         // has no voperands
         ra->RegionBoundary();
@@ -411,7 +411,7 @@ public:
 
     void visitInstVMStore(qir::InstVMStore *ins) { ra->AllocOp(ins); }
 
-    void visitInstHcall(qir::InstHcall *ins UNUSED) { ra->CallOp(true); }
+    void visitInstHcall(UNUSED qir::InstHcall *ins) { ra->CallOp(true); }
 
     void visit_sll(qir::InstBinop *ins) { ra->AllocOp(ins); }
 

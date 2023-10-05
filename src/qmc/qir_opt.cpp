@@ -22,7 +22,7 @@ struct FolderVisitor : qir::InstVisitor<FolderVisitor, bool> {
         return &*last_ins;
     }
 
-    bool visitInst(Inst *ins UNUSED) { return false; }
+    bool visitInst(UNUSED Inst *ins) { return false; }
 
     bool visit_add(InstBinop *ins)
     {
