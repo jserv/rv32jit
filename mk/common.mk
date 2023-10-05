@@ -9,7 +9,12 @@ endif
 CXX = clang++
 CXX := $(shell which $(CXX))
 ifndef CXX
-    $(error "No clang++ found.")
+    # Try appending a suffix.
+    CXX := clang++-15
+    CXX := $(shell which $(CXX))
+    ifndef CXX
+        $(error "No clang++ found.")
+    endif
 endif
 CXX_VERSION := $(shell $(CXX) --version | grep -oP 'clang version \K\d+')
 ifneq ($(shell echo "$(CXX_VERSION) >= 15" | bc), 1)
