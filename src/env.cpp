@@ -440,14 +440,19 @@ struct uabi__kernel_timespec {
     uabi_llong tv_nsec;
 };
 
-static uabi_long linux_clock_gettime64(clockid_t which_clock,
+/*
+ * TODO: Clarify newlib's handling of time units.
+ * It appears that newlib is using millisecond resolution for time manipulation,
+ * while clock_gettime expects nanoseconds in the timespec struct.
+ * Further investigations are needed.
+ */
+static uabi_long linux_clock_gettime64(UNUSED clockid_t which_clock,
                                        uabi__kernel_timespec *ktp)
 {
-    timespec tp;
-    auto rc = clock_gettime(which_clock, &tp);
-    ktp->tv_sec = tp.tv_sec;
-    ktp->tv_nsec = tp.tv_nsec;
-    return rcerrno(rc);
+    clock_t t = clock();
+    ktp->tv_sec = t / CLOCKS_PER_SEC;
+    ktp->tv_nsec = (t % CLOCKS_PER_SEC) * (1e3 / CLOCKS_PER_SEC);
+    return 0;
 }
 
 }  // namespace env_syscall
