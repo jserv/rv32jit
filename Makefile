@@ -3,17 +3,25 @@ include mk/common.mk
 CXXFLAGS := -O2 -flto -Wall -Wextra -Wno-c99-designator
 CXXFLAGS += -I src
 CXXFLAGS += -std=gnu++20 -fno-rtti -fexceptions
-LDFLAGS += -ldl -lrt
+LDFLAGS :=
 
 OUT ?= build
 
 # AsmJit
 ASMJIT_DIR = external/asmjit/src
 CXXFLAGS += -I $(ASMJIT_DIR)
-CXXFLAGS += -DASMJIT_STATIC -DASMJIT_NO_AARCH32 -DASMJIT_NO_AARCH64 -DASMJIT_NO_FOREIGN -DASMJIT_NO_COMPILER
+CXXFLAGS += \
+	-D ASMJIT_EMBED \
+	-D ASMJIT_BUILD_RELEASE \
+	-D ASMJIT_NO_LOGGING \
+	-D ASMJIT_NO_DEPRECATED \
+	-D ASMJIT_NO_AARCH32 -D ASMJIT_NO_AARCH64 \
+	-D ASMJIT_NO_FOREIGN \
+	-D ASMJIT_NO_COMPILER
 ASMJIT_SRCS := \
         $(wildcard $(ASMJIT_DIR)/asmjit/core/*.cpp) \
         $(wildcard $(ASMJIT_DIR)/asmjit/x86/*.cpp)
+LDFLAGS += -lrt
 
 OBJS := $(patsubst $(ASMJIT_DIR)/%.cpp,%.o,$(ASMJIT_SRCS))
 
