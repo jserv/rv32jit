@@ -3,11 +3,6 @@ include mk/common.mk
 CXXFLAGS := -O2 -flto -Wall -Wextra -Wno-c99-designator
 CXXFLAGS += -I src
 CXXFLAGS += -std=gnu++20 -fno-rtti -fexceptions
-
-# C++ Boost
-CXXFLAGS += -DBOOST_ALL_NO_LIB -DBOOST_PROGRAM_OPTIONS_DYN_LINK
-LDFLAGS += -lboost_program_options
-
 LDFLAGS += -ldl -lrt
 
 OUT ?= build

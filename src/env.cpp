@@ -608,10 +608,10 @@ void env::LoadElf(int fd, ElfImage *elf)
                 mmu::mmap(bss_start_nextp, bss_len, prot,
                           MAP_FIXED | MAP_PRIVATE | MAP_ANON);
                 u32 prev_sz = bss_start_nextp - bss_start;
-                if (prev_sz != 0)
+                if (prev_sz)
                     memset(mmu::g2h(bss_start), 0, prev_sz);
             }
-        } else if (phdr->p_memsz != 0) {
+        } else if (phdr->p_memsz) {
             u32 len = roundup(phdr->p_memsz + vaddr_po, (u32) mmu::PAGE_SIZE);
             mmu::mmap(vaddr_ps, len, prot, MAP_FIXED | MAP_PRIVATE | MAP_ANON);
         }
@@ -621,32 +621,32 @@ void env::LoadElf(int fd, ElfImage *elf)
     }
 }
 
-static uabi_ulong AllocAVectorStr(uabi_ulong stk, void const *str, u16 sz)
+static uabi_ulong AllocArgVectorStr(uabi_ulong stk, void const *str, u16 sz)
 {
     stk -= sz;
     memcpy(mmu::g2h(stk), str, sz);
     return stk;
 }
 
-static inline uabi_ulong AllocAVectorStr(uabi_ulong stk, char const *str)
+static inline uabi_ulong AllocArgVectorStr(uabi_ulong stk, char const *str)
 {
-    return AllocAVectorStr(stk, str, strlen(str) + 1);
+    return AllocArgVectorStr(stk, str, strlen(str) + 1);
 }
 
 // TODO: refactor
-void env::InitAVectors(ElfImage *elf, int argv_n, char **argv)
+void env::InitArgVectors(ElfImage *elf, int argv_n, char **argv)
 {
     uabi_ulong stk = elf->stack_start;
 
-    uabi_ulong foo_str_g = stk = AllocAVectorStr(stk, "__foo_str__");
-    uabi_ulong lc_all_str_g = stk = AllocAVectorStr(stk, "LC_ALL=C");
+    uabi_ulong foo_str_g = stk = AllocArgVectorStr(stk, "__foo_str__");
+    uabi_ulong lc_all_str_g = stk = AllocArgVectorStr(stk, "LC_ALL=C");
     char auxv_salt[16] = {0, 1, 2, 3, 4, 5, 6};
     uabi_ulong auxv_salt_g = stk =
-        AllocAVectorStr(stk, auxv_salt, sizeof(auxv_salt));
+        AllocArgVectorStr(stk, auxv_salt, sizeof(auxv_salt));
 
     u32 *argv_strings_g = (u32 *) alloca(sizeof(char *) * argv_n);
     for (int i = 0; i < argv_n; ++i)
-        argv_strings_g[i] = stk = AllocAVectorStr(stk, argv[i]);
+        argv_strings_g[i] = stk = AllocArgVectorStr(stk, argv[i]);
 
     stk &= -4;
 
@@ -661,23 +661,23 @@ void env::InitAVectors(ElfImage *elf, int argv_n, char **argv)
     uabi_ulong envp_p = argv_p + sizeof(uabi_ulong) * (argv_n + 1);
     uabi_ulong auxv_p = envp_p + sizeof(uabi_ulong) * (envp_n + 1);
 
-    auto push_avval = [](uint32_t &vec, uint32_t val) {
+    auto push_arg = [](uint32_t &vec, uint32_t val) {
         *(uabi_ulong *) mmu::g2h(vec) = (val);
         vec += sizeof(uabi_ulong);
     };
     auto push_auxv = [&](uint16_t idx, uint32_t val) {
-        push_avval(auxv_p, idx);
-        push_avval(auxv_p, val);
+        push_arg(auxv_p, idx);
+        push_arg(auxv_p, val);
     };
 
-    push_avval(argc_p, argv_n);
+    push_arg(argc_p, argv_n);
 
     for (int i = 0; i < argv_n; ++i)
-        push_avval(argv_p, argv_strings_g[i]);
-    push_avval(argv_p, 0);
+        push_arg(argv_p, argv_strings_g[i]);
+    push_arg(argv_p, 0);
 
-    push_avval(envp_p, lc_all_str_g);
-    push_avval(envp_p, 0);
+    push_arg(envp_p, lc_all_str_g);
+    push_arg(envp_p, 0);
 
     push_auxv(AT_PHDR, elf->ehdr.e_phoff + elf->load_addr);
     push_auxv(AT_PHENT, sizeof(Elf32_Phdr));

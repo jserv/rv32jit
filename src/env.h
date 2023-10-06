@@ -20,7 +20,7 @@ struct env {
 
     void BootElf(char const *path, ElfImage *elf);
 
-    void InitAVectors(ElfImage *elf, int argv_n, char **argv);
+    void InitArgVectors(ElfImage *elf, int argv_n, char **argv);
     static void InitThread(CPUState *state, ElfImage *elf);
     static void InitSignals(CPUState *state);
 

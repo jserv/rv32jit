@@ -15,7 +15,6 @@ Currently, only GNU/Linux is supported for building `rv32jit`.
 `rv32jit` relies on specific third-party packages for full functionality.
 Please install the following package in advance.
 * clang version 15+, which can be downloaded from the [LLVM Page](https://releases.llvm.org/download.html).
-* `libboost-program-options-dev`, part of [Boost C++ Libraries](https://www.boost.org/)
 * `libelf-dev`
 
 Build the simulator:
