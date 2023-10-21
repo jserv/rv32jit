@@ -27,11 +27,12 @@
 namespace dbt
 {
 struct env::ElfImage {
-    Elf32_Ehdr ehdr;
+    Elf32_Ehdr ehdr; /* elf header */
     uabi_ulong load_addr;
     uabi_ulong stack_start;
-    uabi_ulong entry;
-    uabi_ulong brk;
+    uabi_ulong entry; /* The address where the program's execution begins */
+    uabi_ulong brk;   /* The initial value for the heap end address, associated
+                         with the `brk` system call for memory allocation. */
 };
 env::ElfImage env::exe_elf_image{};
 
@@ -467,8 +468,7 @@ void env::SyscallLinux(CPUState *state)
         (uabi_long) state->gpr[16]};
     uabi_long syscallno = state->gpr[17];
 
-    auto do_syscall = [&args]<typename RV, typename... Args>(RV(*h)(Args...))
-    {
+    auto do_syscall = [&args]<typename RV, typename... Args>(RV (*h)(Args...)) {
         static_assert(sizeof...(Args) <= args.size());
         auto conv = []<typename A>(uabi_ulong in) -> A {
             if constexpr (std::is_pointer_v<A>)
@@ -478,7 +478,7 @@ void env::SyscallLinux(CPUState *state)
         };
         return ([&]<size_t... Idx>(std::index_sequence<Idx...>) {
             return h(decltype(conv)().template operator()<Args>(args[Idx])...);
-        }) (std::make_index_sequence<sizeof...(Args)>{});
+        })(std::make_index_sequence<sizeof...(Args)>{});
     };
 
     auto dispatch = [&]() -> uabi_long {
@@ -650,10 +650,10 @@ void env::InitArgVectors(ElfImage *elf, int argv_n, char **argv)
 
     stk &= -4;
 
-    int envp_n = 1;
-    int auxv_n = 64;
+    const int envp_n = 1;
+    const int auxv_n = 64;
 
-    int stk_vsz = argv_n + envp_n + auxv_n + 3;
+    const int stk_vsz = argv_n + envp_n + auxv_n + 3;
     stk -= stk_vsz * sizeof(uabi_ulong);
     stk &= -16;
     uabi_ulong argc_p = stk;

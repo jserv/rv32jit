@@ -23,7 +23,7 @@ struct CPUStateImpl {
     bool IsTrapPending() { return trapno == TrapCode::NONE; }
 
     using gpr_t = u32;
-    static constexpr u8 gpr_num = 32;
+    static constexpr u8 gpr_num = 32; /* general-purpose registers numbers */
 
     std::array<gpr_t, gpr_num> gpr{};
     gpr_t ip{};
