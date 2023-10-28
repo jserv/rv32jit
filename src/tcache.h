@@ -71,7 +71,7 @@ struct tcache {
     static L1Cache l1_cache;
 
     struct BrindCacheEntry {
-        u32 gip;
+        u32 gip; // global instruction pointer
         void *code;
     };
     using L1BrindCache = std::array<BrindCacheEntry, 1u << L1_CACHE_BITS>;
