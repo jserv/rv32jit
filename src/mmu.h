@@ -29,11 +29,13 @@ struct mmu {
         return ((uptr) hptr - (uptr) base) < ASPACE_SIZE;
     }
 
+    // host to guest
     static ALWAYS_INLINE u32 h2g(void *hptr)
     {
         return (uptr) hptr - (uptr) base;
     }
 
+    // guest to host
     static ALWAYS_INLINE void *g2h(u32 gptr) { return base + gptr; }
 
     static u8 *base;
