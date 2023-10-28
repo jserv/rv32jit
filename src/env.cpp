@@ -653,9 +653,10 @@ void env::InitArgVectors(ElfImage *elf, int argv_n, char **argv)
     const int envp_n = 1;
     const int auxv_n = 64;
 
-    const int stk_vsz = argv_n + envp_n + auxv_n + 3;
+    const int stk_vsz = argv_n + envp_n + auxv_n + 3; // virtual size of stack
     stk -= stk_vsz * sizeof(uabi_ulong);
     stk &= -16;
+
     uabi_ulong argc_p = stk;
     uabi_ulong argv_p = argc_p + sizeof(uabi_ulong);
     uabi_ulong envp_p = argv_p + sizeof(uabi_ulong) * (argv_n + 1);
