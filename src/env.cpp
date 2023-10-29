@@ -636,6 +636,39 @@ static inline uabi_ulong AllocArgVectorStr(uabi_ulong stk, char const *str)
 // TODO: refactor
 void env::InitArgVectors(ElfImage *elf, int argv_n, char **argv)
 {
+    /* Store argc, argv, auxv, envp into virtual stack, thus, we can use offset
+     * technique for emulating 32/64-bit target program on 64-bit emulator.
+     *
+     *
+     *  position            content                     size (bytes) + comment
+     * ------------------------------------------------------------------------
+     * stack pointer ->  [ argc = number of args ]     4
+     *                   [ argv[0] (pointer) ]         4   (program name)
+     *                   [ argv[1] (pointer) ]         4
+     *                   [ argv[..] (pointer) ]        4 * x
+     *                   [ argv[n - 1] (pointer) ]     4
+     *                   [ argv[n] (pointer) ]         4   (= NULL)
+     *
+     *                   [ envp[0] (pointer) ]         4
+     *                   [ envp[1] (pointer) ]         4
+     *                   [ envp[..] (pointer) ]        4
+     *                   [ envp[term] (pointer) ]      4   (= NULL)
+     *
+     *                   [ auxv[0] (Elf32_auxv_t) ]    8
+     *                   [ auxv[1] (Elf32_auxv_t) ]    8
+     *                   [ auxv[..] (Elf32_auxv_t) ]   8
+     *                   [ auxv[term] (Elf32_auxv_t) ] 8   (= AT_NULL vector)
+     *
+     *                   [ padding ]                   0 - 16
+     *
+     *                   [ argument ASCIIZ strings ]   >= 0
+     *                   [ environment ASCIIZ str. ]   >= 0
+     *
+     * (0xbffffffc)      [ end marker ]                4   (= NULL)
+     *
+     * (0xc0000000)      < bottom of stack >           0   (virtual)
+     * ------------------------------------------------------------------------
+     */
     uabi_ulong stk = elf->stack_start;
 
     uabi_ulong foo_str_g = stk = AllocArgVectorStr(stk, "__foo_str__");
@@ -666,7 +699,7 @@ void env::InitArgVectors(ElfImage *elf, int argv_n, char **argv)
         *(uabi_ulong *) mmu::g2h(vec) = (val);
         vec += sizeof(uabi_ulong);
     };
-    auto push_auxv = [&](uint16_t idx, uint32_t val) {
+    auto push_auxv = [&](uint32_t idx, uint32_t val) {
         push_arg(auxv_p, idx);
         push_arg(auxv_p, val);
     };
@@ -680,6 +713,13 @@ void env::InitArgVectors(ElfImage *elf, int argv_n, char **argv)
     push_arg(envp_p, lc_all_str_g);
     push_arg(envp_p, 0);
 
+    // Hints for ELF Auxiliary Vector
+    //
+    // 1. The auxiliary vector structure is defined in: /usr/include/elf.h
+    // 2. The AT_* list is defined in: /usr/include/linux/auxvec.h
+    // 3. To observe the ELF auxiliary vector, set the environment variable LD_SHOW_AUXV=1
+    //    Example: LD_SHOW_AUXV=1 ./build/rv32jit build/aes.elf
+
     push_auxv(AT_PHDR, elf->ehdr.e_phoff + elf->load_addr);
     push_auxv(AT_PHENT, sizeof(Elf32_Phdr));
     push_auxv(AT_PHNUM, elf->ehdr.e_phnum);
@@ -689,17 +729,17 @@ void env::InitArgVectors(ElfImage *elf, int argv_n, char **argv)
     push_auxv(AT_ENTRY, elf->entry);
 
     push_auxv(AT_UID, getuid());
-    push_auxv(AT_GID, getgid());
     push_auxv(AT_EUID, geteuid());
+    push_auxv(AT_GID, getgid());
     push_auxv(AT_EGID, getegid());
 
-    push_auxv(AT_EXECFN, foo_str_g);
-    push_auxv(AT_SECURE, false);
     push_auxv(AT_HWCAP, 0);
     push_auxv(AT_CLKTCK, sysconf(_SC_CLK_TCK));
+    push_auxv(AT_SECURE, false);
     push_auxv(AT_RANDOM, auxv_salt_g);
+    push_auxv(AT_EXECFN, foo_str_g);
 
-    push_auxv(AT_NULL, 0);
+    push_auxv(AT_NULL, 0); // end of the auxiliary vector
 
     elf->stack_start = stk;
 
