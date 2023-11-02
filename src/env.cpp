@@ -1,4 +1,3 @@
-#include <alloca.h>
 #include <elf.h>
 #include <fcntl.h>
 #include <libgen.h>
@@ -17,6 +16,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <ctime>
+#include <vector>
 
 #include "env.h"
 #include "execute.h"
@@ -677,9 +677,13 @@ void env::InitArgVectors(ElfImage *elf, int argv_n, char **argv)
     uabi_ulong auxv_salt_g = stk =
         AllocArgVectorStr(stk, auxv_salt, sizeof(auxv_salt));
 
-    u32 *argv_strings_g = (u32 *) alloca(sizeof(char *) * argv_n);
-    for (int i = 0; i < argv_n; ++i)
-        argv_strings_g[i] = stk = AllocArgVectorStr(stk, argv[i]);
+    std::vector<u32> argv_strings_g;
+    argv_strings_g.reserve(argv_n);
+
+    for (int i = 0; i < argv_n; ++i) {
+        stk = AllocArgVectorStr(stk, argv[i]);
+        argv_strings_g.push_back(stk);
+    }
 
     stk &= -4;
 
