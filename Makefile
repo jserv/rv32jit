@@ -1,6 +1,6 @@
 include mk/common.mk
 
-CXXFLAGS := -O2 -flto -Wall -Wextra -Wno-c99-designator
+CXXFLAGS := -O2 -g -Wall -Wextra -Wno-c99-designator
 CXXFLAGS += -I src
 CXXFLAGS += -std=gnu++20 -fno-rtti -fexceptions
 LDFLAGS :=
