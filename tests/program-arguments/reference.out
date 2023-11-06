@@ -1,0 +1,5 @@
+We have 4 arguments:
+[0] tests/program-arguments/dut.elf
+[1] -abcd
+[2] -1234
+[3] -boom=1

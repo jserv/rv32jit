@@ -105,6 +105,9 @@ check: $(BIN) $(CHECK_ELF_FILES)
 	    $(BIN) $(e) && $(call notice, [OK]); \
 	)
 
+# Tests
+include mk/tests.mk
+
 .PHONY: clean
 clean:
 	$(RM) $(BIN) $(OBJS) $(deps)
